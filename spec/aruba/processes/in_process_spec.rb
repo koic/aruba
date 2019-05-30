@@ -147,14 +147,14 @@ RSpec.describe Aruba::Processes::InProcess do
     let(:main_class) { StdinRunner }
 
     it 'writes single strings to the process' do
-      process.write "World"
+      process.write 'World'
       process.start
       process.stop
       expect(process.stdout).to eq "Hello, World!\n"
     end
 
     it 'writes multiple strings to the process' do
-      process.write "Wor", "ld"
+      process.write 'Wor', 'ld'
       process.start
       process.stop
       expect(process.stdout).to eq "Hello, World!\n"
