@@ -2,7 +2,8 @@ require 'spec_helper'
 
 RSpec.describe Aruba::Processes::InProcess do
   class Runner
-    def initialize(_argv, _stdin, stdout, stderr, kernel)
+    def initialize(_argv, stdin, stdout, stderr, kernel)
+      @stdin = stdin
       @stdout = stdout
       @stderr = stderr
       @kernel = kernel
@@ -20,6 +21,14 @@ RSpec.describe Aruba::Processes::InProcess do
   class StderrRunner < Runner
     def execute!
       @stderr.puts 'yo'
+    end
+  end
+
+  class StdinRunner < Runner
+    def execute!
+      @stdin.rewind
+      item = @stdin.gets.to_s.chomp
+      @stdout.puts "Hello, #{item}!"
     end
   end
 
@@ -131,6 +140,24 @@ RSpec.describe Aruba::Processes::InProcess do
     it 'refuses to exit with anything else' do
       expect { run_process { @kernel.exit 'false' } }
         .to raise_error(TypeError, 'no implicit conversion of String into Integer')
+    end
+  end
+
+  describe '#write' do
+    let(:main_class) { StdinRunner }
+
+    it 'writes single strings to the process' do
+      process.write "World"
+      process.start
+      process.stop
+      expect(process.stdout).to eq "Hello, World!\n"
+    end
+
+    it 'writes multiple strings to the process' do
+      process.write "Wor", "ld"
+      process.start
+      process.stop
+      expect(process.stdout).to eq "Hello, World!\n"
     end
   end
 end
