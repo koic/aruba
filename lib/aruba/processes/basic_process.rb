@@ -52,15 +52,15 @@ module Aruba
       end
 
       def stdin(*)
-        NotImplementedError
+        raise NotImplementedError
       end
 
       def stdout(*)
-        NotImplementedError
+        raise NotImplementedError
       end
 
       def stderr(*)
-        NotImplementedError
+        raise NotImplementedError
       end
 
       def close_io(*)
