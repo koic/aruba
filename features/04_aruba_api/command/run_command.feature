@@ -24,12 +24,7 @@ Feature: Run command
     Given I use a fixture named "cli-app"
 
   Scenario: Existing executable
-    Given an executable named "bin/aruba-test-cli" with:
-    """bash
-    #!/bin/bash
-    exit 0
-    """
-    And a file named "spec/run_spec.rb" with:
+    Given a file named "spec/run_spec.rb" with:
     """ruby
     require 'spec_helper'
 
@@ -42,12 +37,7 @@ Feature: Run command
     Then the specs should all pass
 
   Scenario: Relative path to executable
-    Given an executable named "bin/aruba-test-cli" with:
-    """bash
-    #!/bin/bash
-    exit 0
-    """
-    And a file named "spec/run_spec.rb" with:
+    Given a file named "spec/run_spec.rb" with:
     """ruby
     require 'spec_helper'
 
